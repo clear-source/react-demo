@@ -12,7 +12,7 @@ class Http {
      */
     axiosPost(url,params){
         return new Promise( (resolve,reject) => {
-            axios.post("API/CodeIgniter/index.php/v2/"+url,params)
+            axios.post("/API/CodeIgniter/index.php/v2/Operation/"+url,params)
                 .then( (response) => {
                     resolve(response);
                 })
@@ -30,7 +30,7 @@ class Http {
      */
     axiosGet(url,params){
         return new Promise( (resolve,reject) => {
-            axios.get("API/CodeIgniter/index.php/v2/"+url,params)
+            axios.get("/API/CodeIgniter/index.php/v2"+url,params)
               .then( (response) => {
                 resolve(response);
               })

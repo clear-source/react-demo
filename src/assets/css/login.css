@@ -14,30 +14,63 @@ html,body,#root,.App{
 }
 .checked-language{
     display: inline-block;
-    margin-right: 80px;
-    width: 100px;
-    height: 36px;
-    line-height: 36px;
+    margin-right: 6rem;
+    width: 7rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
     text-align: center;
     border:1px solid #fff;
-    margin-top: 20px;
-    border-radius: 5px;
+    margin-top: 1.8rem;
+    border-radius: 0.5rem;
     transition: all .2s linear;
     cursor: pointer;
 }
 .language-list{
     position: absolute;
-    top:56px;
-    right: 80px;
+    top:4rem;
+    margin-right: 6rem;
     transition: all .3s linear;
     cursor: pointer;
 }
 .language-list>li{
-    height: 36px;
+    height: 2.5rem;
     width: 100px;
-    line-height: 30px;
+    line-height: 2.2rem;
     text-align: center;
 }
 .language-list>li:hover{
     color: #affafa;
+}
+.login-body{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width:28%;
+    height: 34%;
+    background:rgba(255,255,255,.5);
+    text-align: center;
+}
+.login-body .inputWidth{
+    width: 60%;
+}
+.login-title{
+    font-size:1.8rem;
+    font-weight: normal;
+    padding: 0;
+}
+#btn{
+    width: 30%;
+    font-size: 1.3rem;
+    background: #1976d2;
+    margin-top: 2rem;
+}
+.pw-problem{
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    margin: auto;
+    margin-top: 1.5rem;
 }
