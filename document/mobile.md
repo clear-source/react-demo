@@ -15,7 +15,7 @@
     在项目入口文件 index.js 里 引入 lib-flexible
     import 'lib-flexible'
 
-![Brief](images/1.png)
+![Brief](../images/1.png)
 
 ## 第三步：
 
@@ -27,15 +27,15 @@
 
     // px2rem({ remUnit: 75 }) 的意思就是1rem = 75px 这个是根据750px设计稿来的，如果是620 的就写 62
 
-![Brief](images/2.png)
+![Brief](../images/2.png)
 
-![Brief](images/3.png)
+![Brief](../images/3.png)
 
 ## 第四步：
 
     在  public/index.html   文件里把下面的这段代码注释掉
 
-![Brief](images/4.png)
+![Brief](../images/4.png)
 
 ##第五步：
 
