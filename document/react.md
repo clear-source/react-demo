@@ -1,6 +1,7 @@
 # React 项目快速搭建
 
 ## 使用create-react-app快速搭建
+> **Node >= 6 和 npm >= 5.2**
 > * npx create-react-app 项目名称
 
 > * 运行 npm start
@@ -13,40 +14,28 @@
 
 ![Brief](../images/9.png)
 
-> React16废弃的三个生命周期函数
->> * ~~componentWillMount~~
->> * ~~componentWillReceiveProps~~
->> * ~~componentWillUpdate~~
-
-> 取而代之的是两个新的生命周期函数
->> * static getDerivedStateFromProps
->> * getSnapshotBeforeUpdate
-
 > 我们将React的生命周期分为三个阶段:
->> * 挂载阶段
->> * 更新阶段
->> * 卸载阶段
+>> * 挂载
+>> * 更新
+>> * 卸载
 
-## 挂载阶段
-==================================
+## 挂载
 
 挂载阶段，也可以理解为组件的初始化阶段，就是将我们的组件插入到DOM中，只会发生一次
 
 这个阶段的生命周期函数调用如下：
 
-> * constructor
-> * getDerivedStateFromProps
-> * ~~componentWillMount/UNSAVE_componentWillMount~~
-> * render
-> * componentDidMount
+> * [constructor()](https://react.docschina.org/docs/react-component.html#constructor)
+> * [static getDerivedStateFromProps()](https://react.docschina.org/docs/react-component.html#static-getderivedstatefromprops)
+> * [render()](https://react.docschina.org/docs/react-component.html#render)
+> * [componentDidMount()](https://react.docschina.org/docs/react-component.html#componentdidmount)
 
 ### constructor
 
 组件构造函数，第一个被执行
 
-如果没有显示定义它，我们会拥有一个默认的构造函数
-
-如果显示定义了构造函数，我们必须在构造函数第一行执行super(props)，否则我们无法在构造函数里拿到this对象，这些都属于ES6的知识
+构造函数，和java class的构造函数一样，用于初始化这个组件的一些状态和操作，如果你是通过继承React.Component子类来创建React的组件的，那么你
+应当首先调用super(props) 初始化父类
 
 在构造函数里面我们一般会做两件事：
 
@@ -60,11 +49,34 @@ constructor(props) {
     this.state = {
       name:'source',
     }
-    this.handleChange1 = this.handleChange1.bind(this)
-    this.handleChange2 = this.handleChange2.bind(this)
+    this.handleClick = this.handleClick.bind(this);
 }
 
 ```
+### 关于bind函数的解释说明
+
+注意js的this指向比较特殊，比如以下的例子作为onClick回调函数由button组件去调用的时候不会把组件类的上下文带过去。
+
+```
+handleClick() {
+    console.log('handleClick', this); // undefined
+  }
+ ...
+ <button onClick={this.handleClick}>click</button>
+```
+
+这种问题推荐三种可能的解决方式，其核心均为将函数的this强制绑定到组件类上:
+
+> * 就是上面说的在constructor函数中显示调用bind
+> * 在onClick的时候进行bind: ，这种方式的劣势是每次调用的时候都需要进行bind，优势是方便传参，处理函数需要传参可以参考React的文档 [Passing Arguments to Event Handlers](https://reactjs.org/docs/handling-events.html#passing-arguments-to-event-handlers)
+> * 声明函数时使用箭头匿名函数，箭头函数会自动设置this为当前类。(简洁有效，墙裂推荐)
+
+```
+handleClick = () => {
+    console.log('handleClick', this); // Component
+}
+```
+
 > **禁止在构造函数中调用setState，可以直接给state设置初始值**
 
 ### getDerivedStateFromProps
@@ -91,6 +103,7 @@ class ExampleComponent extends React.Component {
   }
 }
 ```
+> **注意getDerivedStateFromProps是一个static方法，意味着拿不到实例的this**
 
 ### render
 
@@ -111,59 +124,36 @@ render函数是纯函数，里面只做一件事，就是返回需要渲染的�
 
 ### componentDidMount
 
-组件装载之后调用，此时我们可以获取到DOM节点并操作，比如对canvas，svg的操作，服务器请求，订阅都可以写在这个里面，但是记得在componentWillUnmount中取消订阅
+componentDidMount方法会在render方法之后立即被调用，该方法在整个React生命周期中只会被调用一次。React的组件树是一个树形结构，此时你可以认为这个组件以及他下面的所有子组件都已经渲染完了，所以在这个方法中你可以调用和真实DOM相关的操作了
+
+我们推荐可以在这个函数中发送异步请求，在回调函数中调用setState()设置state，等数据到达后触发重新渲染。但注意尽量不要在这个函数中直接调用setState()设置状态，这会触发一次额外的重新渲染，可能造成性能问题。
 
 ```
 componentDidMount() {
-    const { progressCanvas, progressSVG } = this
-
-    const canvas = progressCanvas.current
-    const ctx = canvas.getContext('2d')
-    canvas.width = canvas.getBoundingClientRect().width
-    canvas.height = canvas.getBoundingClientRect().height
-
-    const svg = progressSVG.current
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    rect.setAttribute('x', 0)
-    rect.setAttribute('y', 0)
-    rect.setAttribute('width', 0)
-    rect.setAttribute('height', svg.getBoundingClientRect().height)
-    rect.setAttribute('style', 'fill:red')
-
-    const animate = document.createElementNS('http://www.w3.org/2000/svg', 'animate')
-    animate.setAttribute('attributeName', 'width')
-    animate.setAttribute('from', 0)
-    animate.setAttribute('to', svg.getBoundingClientRect().width)
-    animate.setAttribute('begin', '0ms')
-    animate.setAttribute('dur', '1684ms')
-    animate.setAttribute('repeatCount', 'indefinite')
-    animate.setAttribute('calcMode', 'linear')
-    rect.appendChild(animate)
-    svg.appendChild(rect)
-    svg.pauseAnimations()
-
-    this.canvas = canvas
-    this.svg = svg
-    this.ctx = ctx
- }
+    console.log('componentDidMount');
+    fetch("https://api.github.com/search/repositories?q=language:java&sort=stars")
+      .then(res => res.json())
+      .then((result) => {
+          this.setState({ // 触发render
+            items: result.items
+          });
+        })
+      .catch((error) => { console.log(error)});
+    // this.setState({color: xxx}) // 不要这样做
+  }
 ```
 
-在componentDidMount中调用setState会触发一次额外的渲染，多调用了一次render函数，但是用户对此没有感知，因为它是在浏览器刷新屏幕前执行的，但是我们应该在开发中避免它，因为它会带来一定的性能问题，我们应该在constructor中初始化我们的state对象，而不应该在componentDidMount调用state方法
-
-## 更新阶段
-==================================
+## 更新
 
 更新阶段，当组件的props改变了，或组件内部调用了setState或者forceUpdate发生，会发生多次
 
 这个阶段的生命周期函数调用如下：
 
->* ~~componentWillReceiveProps/UNSAFE_componentWillReceiveProps~~
->* getDerivedStateFromProps
->* shouldComponentUpdate
->* ~~componentWillUpdate/UNSAFE_componentWillUpdate~~
->* render
->* getSnapshotBeforeUpdate
->* componentDidUpdate
+>* [static getDerivedStateFromProps](https://react.docschina.org/docs/react-component.html#static-getderivedstatefromprops)
+>* [shouldComponentUpdate](https://react.docschina.org/docs/react-component.html#shouldcomponentupdate)
+>* [render](https://react.docschina.org/docs/react-component.html#render)
+>* [getSnapshotBeforeUpdate](https://react.docschina.org/docs/react-component.html#getsnapshotbeforeupdate)
+>* [componentDidUpdate](https://react.docschina.org/docs/react-component.html#componentdidupdate)
 
 ### getDerivedStateFromProps
 
@@ -178,6 +168,8 @@ componentDidMount() {
 注意当我们调用forceUpdate并不会触发此方法
 
 因为默认是返回true，也就是只要接收到新的属性和调用了setState都会触发重新的渲染，这会带来一定的性能问题，所以我们需要将this.props与nextProps以及this.state与nextState进行比较来决定是否返回false，来减少重新渲染
+
+该函数通常是优化性能的紧急出口，是个大招，不要轻易用，如果要用可以参考Immutable 详解及 React 中实践 .
 
 ### render
 
@@ -232,17 +224,48 @@ class ScrollingList extends React.Component {
 
 在这个函数里我们可以操作DOM，和发起服务器请求，还可以setState，但是注意一定要用if语句控制，否则会导致无限循环
 
-## 卸载阶段
-==================================
+```
+componentDidUpdate(prevProps) { 
+  if(prevProps.myProps !== this.props.myProp) {
+    // this.props.myProp has a different value
+    // we can perform any operations that would 
+    // need the new value and/or cause side-effects 
+    // like AJAX calls with the new value - this.props.myProp
+  }
+}
+```
+
+## 卸载
 
 卸载阶段，当我们的组件被卸载或者销毁了
 
 这个阶段的生命周期函数只有一个：
 
-> * componentWillUnmount
+> * [componentWillUnmount](https://react.docschina.org/docs/react-component.html#componentwillunmount)
 
 ### componentWillUnmount
 
 当我们的组件被卸载或者销毁了就会调用，我们可以在这个函数里去清除一些定时器，取消网络请求，清理无效的DOM元素等垃圾清理工作
 
 注意不要在这个函数里去调用setState，因为组件不会重新渲染了
+
+## 错误处理
+
+React16中新增了一个生命周期函数:
+
+> * [static getDerivedStateFromError](https://react.docschina.org/docs/react-component.html#static-getderivedstatefromerror)
+> * [componentDidCatch](https://react.docschina.org/docs/react-component.html#componentdidcatch)
+
+### componentDidCatch
+
+在react组件中如果产生的错误没有被被捕获会被抛给上层组件，如果上层也不处理的话就会抛到顶层导致浏览器白屏错误，在React16中我们可以实现这个方法来捕获子组件产生的错误，然后在父组件中妥善处理，比如搞个弹层通知用户网页崩溃等
+
+```
+componentDidCatch(error, info) { // from react.org
+    // Display fallback UI
+    this.setState({ hasError: true });
+    // You can also log the error to an error reporting service
+    logErrorToMyService(error, info);
+  }
+
+```
