@@ -31,7 +31,7 @@
                 try_files $uri $uri/ /index.html; #配置修改
             }
         }
-        ```
+    ```
 
 # apache 修改httpd.conf
 # 如果出现上面的错误，找到 LoadModule rewrite_module 这行， 取消掉前面的注释 conf文件
