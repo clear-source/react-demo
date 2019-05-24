@@ -6,21 +6,20 @@
 
 ## 第二步 引入postCss插件
 
-    ```
+```
     const postcssAspectRatioMini = require('postcss-aspect-ratio-mini');
     const postcssPxToViewport = require('postcss-px-to-viewport');
     const postcssWriteSvg = require('postcss-write-svg');
     const postcssPresetEnv = require('postcss-preset-env');
     const postcssViewportUnits = require('postcss-viewport-units');
     const cssnano = require('cssnano');
-
-    ```
+```
 
 ![Brief](../images/10.png)
 
 ## 第三步 增加postcss 配置
 
-    ```
+```
     options: {
           // Necessary for external CSS imports to work
           // https://github.com/facebook/create-react-app/issues/2677
@@ -73,7 +72,7 @@
           sourceMap: isEnvProduction && shouldUseSourceMap,
     },
     
-    ```
+```
 ![Brief](../images/11.png)
 
 ## 第四步 配置成功
