@@ -84,7 +84,7 @@
 
     打开public/index.html，在head 中插入 viewport-units-buggyfill 和body 中使用
 
-    ```
+```
     <head>
         <script src="//g.alicdn.com/fdilab/lib3rd/viewport-units-buggyfill/0.6.2/??viewport-units-buggyfill.hacks.min.js,viewport-units-buggyfill.min.js"></script>
     </head>
@@ -102,6 +102,7 @@
 ```
 
 ![Brief](../images/12.png)
+
 
 ## 第六步 导入文件@
     在webpack.config.js中
