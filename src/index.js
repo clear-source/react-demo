@@ -1,14 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Link,HashRouter } from "react-router-dom";//路由跳转
-import App from './App';
+import { BrowserRouter as Router, Route, Link,HashRouter,Switch } from "react-router-dom";//路由跳转
+
+//优化打包后路由不同读取不同js文件 动态加载
+import asyncComponent from './untils/asyncComponent';
+const App =asyncComponent(()=> import ('./App'));
+const Main = asyncComponent(()=> import ('./components/main/Main'));
 
 //引入全局样式
 import 'normalize.css';
 import './assets/css/rest.css';
 import './rem/rem.js';
 import * as serviceWorker from './serviceWorker';
-import Main from './components/main/Main';
+
 
 ReactDOM.render(
     (<HashRouter>
