@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>性能优化</title>
+    
+</head>
+<body>
+    <script >
+     {
+        /**
+        *数组去重
+        *
+        */
+        let arr = [1,2,3,2,3,4,4];
+        console.log([...new Set(arr)]);
+     }
+     {
+        let p=new Promise((resolve,reject)=>{
+            resolve(123)
+        });
+        p.then((res)=>{
+
+            // new IntersectionObserver
+            console.log(res);
+        })
+     }
+     {
+         function slowPromise(params){
+             return new Promise((resolve,reject)=>{
+                 setTimeout(()=>{
+                    resolve(params);
+                 },0);
+             });
+         }
+         async function doct(params) {
+             const myPromise=await slowPromise(params);
+             console.log(myPromise);
+         }
+         doct({"name":"tom","age":26});
+     }
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Deboundce</title>
+</head>
+<body>
+    <div>
+        <h1>防抖</h1>
+        <input type="text" name="text" id="inp">
+    </div>
+    <div>
+        <h1>节流</h1>
+        <!-- <button id="btn">节流</button> -->
+    </div>
+    <script>
+    {
+        //防抖
+        function debounce(fn){
+            let timeout=null;
+            return function(){
+                clearTimeout(timeout);
+                timeout=setTimeout(()=>{
+                    fn.apply(this,arguments);
+                },500);
+            }
+        }
+        function sayHi(){
+            console.log('防抖成功');
+        }
+        let inp=document.getElementById('inp');
+        inp.addEventListener('input',debounce(sayHi));
+    }
+    {
+        //节流
+        // function throttle(fn){
+        //     let canRun= true;
+        //     return function(){
+        //         if(!canRun) return;
+        //         canRun=false;
+        //         setTimeout(()=>{
+        //             fn.apply(this.arguments);
+        //             canRun=true;
+        //         },500)
+        //     }
+        // }
+        // function sayHi(e){
+        //     console.log(e);
+        // }
+        // window.addEventListener('resize',throttle(sayHi));
+    }
+    {
+        let a1=['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2'];
+        let a2=['A','B','C','D'].map(item=>{
+            return item+3;
+        });
+        console.log(a2);
+        let a3=[...a1,...a2].sort().map(item=>{
+            if(item.includes('3')){
+                return item.slice(0,1);
+            }
+            return item;
+        });
+        console.log(a3);
+        //["A1", "A2", "A", "B1", "B2", "B", "C1", "C2", "C", "D1", "D2", "D"]
+    }
+    </script>
+</body>
+</html>

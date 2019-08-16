@@ -78,3 +78,10 @@ const Main = asyncComponent(()=> import ('./components/main/Main'));
 </Switch>
 
 ```
+
+请求读取对象报错
+默认 msg:''
+
+{msg.data} //报错
+{msg && msg.data} 可以
+
