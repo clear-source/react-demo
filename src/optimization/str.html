@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>str</title>
+  </head>
+  <body>
+    <script>
+      var str = "adaacceree45s88";
+      // var arr =str.match(/(\w)\1*/g);
+      // var maxLen = Math.max(...arr.map(s => s.length));
+      // var result = arr.reduce((pre,curr)=>{
+      //     if(curr.length===maxLen){
+      //         pre[curr[0]]=curr.length;
+      //     }
+      //     console.log(pre)
+      //     return pre;
+      // },{});
+      function strMax(str) {
+        var arr = str.match(/(\w)\1*/g);
+        var maxLen = Math.max(...arr.map(s => s.length));
+        return arr.reduce((pre, curr) => {
+          curr.length === maxLen && (pre[curr[0]] = curr.length);
+          return pre;
+        }, {});
+      }
+      console.log(strMax(str));
+      //返回数组
+      var arr1 = Array.from({ length: 100 }, (v, i) => i + 1);
+      console.log(arr1);
+    /**
+     * 例如统计 1 ~ 400W 出现 1 的次数。
+     * 
+     */
+      function countOne(n) {
+        var factor=1;
+        var count=0;
+        var next=parseInt(n/factor);
+        while(next!==0){
+            var lower=n-next*factor;
+            var curr=next%10;
+            var high=parseInt(n/(10*factor));
+            switch(curr){
+                case 0:
+                    count+=high*factor;
+                    break;
+                case 1:
+                    count+=high*factor+lower+1;
+                    break;
+                default:
+                    count+=(high+1)*factor;
+                    break;
+            }
+            factor*=10;
+            next=parseInt(n/factor);
+        }
+        return count;
+      }
+      console.time("count");
+      console.log(countOne(4000000));
+      console.timeEnd("count");
+    </script>
+  </body>
+</html>
